@@ -17,7 +17,7 @@ module Handy
       env_hash = hash[key.to_s] || {}
 
       final_hash = common_hash.deep_merge(env_hash)
-      Hashr.new(final_hash)
+      ::Hashr.new(final_hash)
     end
   end
 end
