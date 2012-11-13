@@ -9,6 +9,8 @@ module Handy
 
     def load(key = Rails.env)
       file            = Rails.root.join('config', filename)
+      return unless File.exist?(file)
+
       hash            = YAML.load(ERB.new(File.read(file)).result)
 
       common_hash = hash['common'] || {}

@@ -9,3 +9,11 @@ Collection of handy tools collected over a period of time.
 And then execute:
 
     $ rake -T handy
+
+## Settings
+
+Besides having some useful rake tasks it also sets up a constant called
+`Settings`. It reads the `application.yml` file and populates
+`Settings`.
+
+
