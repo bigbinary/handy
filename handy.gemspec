@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "handy"
   gem.require_paths = ["lib"]
   gem.version       = Handy::VERSION
+
+  gem.add_runtime_dependency 'hashr'
 end
