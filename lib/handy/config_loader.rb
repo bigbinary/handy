@@ -1,3 +1,5 @@
+require "hashr"
+
 module Handy
   class ConfigLoader
 
