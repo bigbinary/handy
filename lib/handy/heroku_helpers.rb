@@ -1,3 +1,7 @@
+def execute_command(cmd)
+  puts cmd
+  system cmd
+end
 namespace :handy do
 
   namespace :heroku do
@@ -18,7 +22,7 @@ namespace :handy do
       dst_app_name = "#{heroku_app_name}-staging"
 
       puts cmd = "heroku pgbackups:restore DATABASE `heroku pgbackups:url --app #{src_app_name}` --app #{dst_app_name} --confirm #{dst_app_name}"
-      system(cmd)
+      execute_command cmd
     end
 
 
@@ -26,16 +30,16 @@ namespace :handy do
       database = local_database
 
       puts cmd = "heroku pgbackups:capture --expire --app #{app_name}"
-      system(cmd)
+      execute_command cmd
 
       puts cmd = "curl -o latest.dump `heroku pgbackups:url --app #{app_name}`"
-      system(cmd)
+      execute_command cmd
 
       puts cmd = "pg_restore --verbose --clean --no-acl --no-owner -h localhost  -U nsingh -d #{database} latest.dump"
-      system(cmd)
+      execute_command cmd
 
       puts cmd = "rm latest.dump"
-      system(cmd)
+      execute_command cmd
     end
 
     def heroku_app_name t, args
