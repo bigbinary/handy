@@ -43,7 +43,7 @@ namespace :handy do
     end
 
     def heroku_app_name t, args
-      args[:app] || ENV['APP_NAME'] || abort(<<ERROR_MSG)
+      args[:app] || ENV['APP_NAME'] || Rails.root.basename || abort(<<ERROR_MSG)
 Error: heroku app name is missing. This rake task should be invoked like this:
 
   rake #{t.name}['tweli'].
