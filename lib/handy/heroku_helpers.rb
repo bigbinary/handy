@@ -1,7 +1,8 @@
-def execute_command(cmd)
+def execute(cmd)
   puts cmd
   system cmd
 end
+
 namespace :handy do
 
   namespace :heroku do
@@ -21,25 +22,18 @@ namespace :handy do
       src_app_name = "#{heroku_app_name}-production"
       dst_app_name = "#{heroku_app_name}-staging"
 
-      puts cmd = "heroku pgbackups:restore DATABASE `heroku pgbackups:url --app #{src_app_name}` --app #{dst_app_name} --confirm #{dst_app_name}"
-      execute_command cmd
+      get_src_db_url_cmd = "`heroku pgbackups:url --app #{src_app_name}`"
+      execute "heroku pgbackups:restore DATABASE #{get_src_db_url_cmd} --app #{dst_app_name} --confirm #{dst_app_name}"
     end
 
 
     def export2local(app_name)
       database = local_database
 
-      puts cmd = "heroku pgbackups:capture --expire --app #{app_name}"
-      execute_command cmd
-
-      puts cmd = "curl -o latest.dump `heroku pgbackups:url --app #{app_name}`"
-      execute_command cmd
-
-      puts cmd = "pg_restore --verbose --clean --no-acl --no-owner -h localhost  -U nsingh -d #{database} latest.dump"
-      execute_command cmd
-
-      puts cmd = "rm latest.dump"
-      execute_command cmd
+      execute "heroku pgbackups:capture --expire --app #{app_name}"
+      execute "curl -o latest.dump `heroku pgbackups:url --app #{app_name}`"
+      execute "pg_restore --verbose --clean --no-acl --no-owner -h localhost  -U nsingh -d #{database} latest.dump"
+      execute "rm latest.dump"
     end
 
     def heroku_app_name t, args
