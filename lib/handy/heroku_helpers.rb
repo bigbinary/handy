@@ -32,7 +32,7 @@ namespace :handy do
 
       execute "heroku pgbackups:capture --expire --app #{app_name}"
       execute "curl -o latest.dump `heroku pgbackups:url --app #{app_name}`"
-      execute "pg_restore --verbose --clean --no-acl --no-owner -h localhost  -U nsingh -d #{database} latest.dump"
+      execute restore_command
       execute "rm latest.dump"
     end
 
@@ -45,9 +45,21 @@ ERROR_MSG
     end
 
     def local_database
-      database_config = Handy::ConfigLoader.new('database.yml').load
       database_config && database_config[:database] ||
           abort('Error: Please check your database.yml since no database was found.')
+    end
+    
+    def database_config
+      @database_config ||= Handy::ConfigLoader.new('database.yml').load
+    end
+    
+    def restore_command
+      result = "pg_restore --verbose --clean --no-acl --no-owner"
+      result += " -h#{database_config[:host]}" if database_config[:host].present?
+      result += " -U#{database_config[:username]}" if database_config[:username].present?
+      result = "PGPASSWORD=#{database_config[:password]} #{result}" if database_config[:password].present?
+      
+      result + " -d #{database} latest.dump"
     end
   end
 
