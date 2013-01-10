@@ -28,8 +28,6 @@ namespace :handy do
 
 
     def export2local(app_name)
-      database = local_database
-
       execute "heroku pgbackups:capture --expire --app #{app_name}"
       execute "curl -o latest.dump `heroku pgbackups:url --app #{app_name}`"
       execute restore_command
@@ -59,7 +57,7 @@ ERROR_MSG
       result += " -U#{database_config[:username]}" if database_config[:username].present?
       result = "PGPASSWORD=#{database_config[:password]} #{result}" if database_config[:password].present?
       
-      result + " -d #{database} latest.dump"
+      result + " -d #{local_database} latest.dump"
     end
   end
 
