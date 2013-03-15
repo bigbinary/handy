@@ -2,7 +2,7 @@ module Handy
   class Engine < ::Rails::Engine
 
     initializer :load_application_yml, before: :load_environment_config do
-      ::Settings = ConfigLoader.new('application.yml').load
+      ::Settings = ConfigLoader.new('settings.yml').load
     end
 
     rake_tasks do
