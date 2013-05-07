@@ -16,4 +16,5 @@ Gem::Specification.new do |gem|
   gem.version       = Handy::VERSION
 
   gem.add_runtime_dependency 'hashr'
+  gem.add_runtime_dependency 'heroku'
 end
