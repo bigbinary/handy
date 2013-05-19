@@ -7,17 +7,18 @@ end
 namespace :handy do
 
   namespace :heroku do
-    desc "Copy production data to development"
+
+    desc "Takes snapshot of production db and copies production data to development"
     task :prod2development, :app do |t, args|
       export2local "#{heroku_app_name(t, args)}-production"
     end
 
-    desc "Copy staging data to development"
+    desc "Takes snapshot of staging db and copies staging data to development"
     task :staging2development, :app do |t, args|
       export2local "#{heroku_app_name(t, args)}-staging"
     end
 
-    desc "Copy production data to staging"
+    desc "Takes snapshot of production db and copies production data to staging"
     task :prod2staging, :app do |t, args|
       heroku_app_name = heroku_app_name(t, args)
       src_app_name = "#{heroku_app_name}-production"
