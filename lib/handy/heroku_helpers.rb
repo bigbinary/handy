@@ -30,9 +30,13 @@ namespace :handy do
 
 
     def export2local(app_name)
-      execute "heroku pgbackups:capture --expire --app #{app_name}"
+      take_current_snapshot(app_name)
       execute "curl -o latest.dump `heroku pgbackups:url --app #{app_name}`"
       execute restore_command + "; rm latest.dump" 
+    end
+
+    def take_current_snapshot(app_name)
+      execute "heroku pgbackups:capture --expire --app #{app_name}"
     end
 
     def heroku_app_name t, args
