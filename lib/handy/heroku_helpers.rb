@@ -1,5 +1,6 @@
 def execute(cmd)
   puts cmd
+  Rails.logger.info(cmd) if defined?(Rails)
   system cmd
 end
 
