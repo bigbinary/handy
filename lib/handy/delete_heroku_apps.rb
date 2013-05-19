@@ -7,7 +7,7 @@ namespace :handy do
        %w(y yes).include?  STDIN.gets.chomp.downcase
     end
 
-    desc "Delete herokou apps."
+    desc "Deletes herokou applications belonging to your account. Be very very careful. There is no going back."
     task :delete_apps do
       output = `heroku apps`
       output.split(/\r?\n/).each do |record|
