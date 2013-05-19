@@ -20,6 +20,8 @@ namespace :handy do
 
     desc "Takes snapshot of production db and copies production data to staging"
     task :prod2staging, :app do |t, args|
+      take_current_snapshot heroku_app_name(t, args)
+
       heroku_app_name = heroku_app_name(t, args)
       src_app_name = "#{heroku_app_name}-production"
       dst_app_name = "#{heroku_app_name}-staging"
