@@ -7,6 +7,11 @@ namespace :handy do
 
   namespace :heroku do
 
+    desc "Backup production database"
+    task :backup_production, :app do |t, args|
+      take_current_snapshot "#{heroku_app_name(t, args)}-production"
+    end
+
     desc "Takes snapshot of production db and copies production data to development"
     task :prod2development, :app do |t, args|
       export2local "#{heroku_app_name(t, args)}-production"
