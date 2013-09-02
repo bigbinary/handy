@@ -41,6 +41,7 @@ namespace :handy do
 
       if a.nil? || b.nil?
         puts "Usage: rake handy:heroku:a2b ENV['A']=production ENV['B']=staging"
+        exit 1
       end
 
       take_current_snapshot "#{heroku_app_name(t, args)}-#{a}"
