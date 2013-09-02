@@ -34,20 +34,20 @@ namespace :handy do
       execute "heroku pgbackups:restore DATABASE #{get_src_db_url_cmd} --app #{dst_app_name} --confirm #{dst_app_name}"
     end
 
-    desc "Takes snapshot of branch A and pushes to brarnch B"
+    desc "Takes snapshot of branch A and pushes to branch B"
     task :a2b, :app do |t, args|
       a = ENV['A'] || ENV['a']
       b = ENV['B'] || ENV['b']
 
       if a.nil?
-        puts "ENV['A'] was not supplied"
-        puts "Usage: rake handy:heroku:a2b ENV['A']=production ENV['B']=staging"
+        puts "A was not supplied"
+        puts "Usage: rake handy:heroku:a2b A=production B=533-home-page-design--ip"
         exit 1
       end
 
       if b.nil?
-        puts "ENV['B'] was not supplied"
-        puts "Usage: rake handy:heroku:a2b ENV['A']=production ENV['B']=staging"
+        puts "B was not supplied"
+        puts "Usage: rake handy:heroku:a2b A=production B=533-home-page-design--ip"
         exit 1
       end
 
