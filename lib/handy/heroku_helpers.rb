@@ -39,7 +39,7 @@ namespace :handy do
       a = ENV['A'] || ENV['a']
       b = ENV['B'] || ENV['b']
 
-      if a.nil? || b.nil}
+      if a.nil? || b.nil?
         puts "Usage: rake handy:heroku:a2b ENV['A']=production ENV['B']=staging"
       end
 
