@@ -34,6 +34,24 @@ namespace :handy do
       execute "heroku pgbackups:restore DATABASE #{get_src_db_url_cmd} --app #{dst_app_name} --confirm #{dst_app_name}"
     end
 
+    desc "Takes snapshot of branch A and pushes to brarnch B"
+    task :a2b, :app do |t, args|
+      a = ENV['A'] || ENV['a']
+      b = ENV['B'] || ENV['b']
+
+      if a.nil? || b.nil}
+        puts "Usage: rake handy:heroku:a2b ENV['A']=production ENV['B']=staging"
+      end
+
+      take_current_snapshot "#{heroku_app_name(t, args)}-#{a}"
+
+      heroku_app_name = heroku_app_name(t, args)
+      src_app_name = "#{heroku_app_name}-#{a}"
+      dst_app_name = "#{heroku_app_name}-#{b}"
+
+      get_src_db_url_cmd = "`heroku pgbackups:url --app #{src_app_name}`"
+      execute "heroku pgbackups:restore DATABASE #{get_src_db_url_cmd} --app #{dst_app_name} --confirm #{dst_app_name}"
+    end
 
     def export2local(app_name)
       take_current_snapshot(app_name)
