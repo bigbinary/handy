@@ -42,6 +42,8 @@ namespace :handy do
       if a.nil?
         puts "A was not supplied"
         puts "Usage: rake handy:heroku:a2b A=production B=533-home-page-design--ip"
+        puts "       heroku addons:add pgbackups --app demo-533-home-page-design--ip"
+        puts "       Also ensure that you have access to this application"
         exit 1
       end
 
