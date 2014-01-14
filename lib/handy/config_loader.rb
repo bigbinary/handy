@@ -10,16 +10,24 @@ module Handy
     end
 
     def load(key = Rails.env)
-      file            = Rails.root.join('config', filename)
-      return unless File.exist?(file)
+      global_file = Rails.root.join('config', filename)
+      settings = read_settings_from_file(global_file)
+      common_settings = settings['common'] || {}
+      env_settings = settings[key.to_s] || {}
 
-      hash            = YAML.load(ERB.new(File.read(file)).result)
+      env_file = Rails.root.join('config', File.basename(filename, '.yml'), "#{key}.yml")
 
-      common_hash = hash['common'] || {}
-      env_hash = hash[key.to_s] || {}
+      env_settings_from_file = read_settings_from_file(env_file)
+      env_settings = env_settings.deep_merge(env_settings_from_file)
 
-      final_hash = common_hash.deep_merge(env_hash)
-      ::Hashr.new(final_hash)
+      result_settings = common_settings.deep_merge(env_settings)
+      ::Hashr.new(result_settings)
+    end
+
+    private
+    def read_settings_from_file(filepath)
+      return {} unless File.exist?(filepath)
+      YAML.load(ERB.new(File.read(filepath)).result)
     end
   end
 end
