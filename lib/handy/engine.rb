@@ -9,6 +9,7 @@ module Handy
       load 'handy/trailing_whitespaces.rb'
       load 'handy/delete_merged_branches.rb'
       load 'handy/heroku_tasks.rb'
+      load 'handy/add_services_and_workers_to_test.rb'
       load 'handy/delete_heroku_apps.rb'
     end
 
