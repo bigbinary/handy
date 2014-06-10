@@ -5,6 +5,12 @@ end
 
 namespace :handy do
 
+  desc "delete merged branches"
+  task :delete_merged_branches do
+    cmd = "git branch -r --merged | grep -v master | grep -v staging | grep -v production | sed -e 's/origin\//:/' | xargs git push origin"
+    `#{cmd}`
+  end
+
   namespace :heroku do
 
     desc "Backup production database"
