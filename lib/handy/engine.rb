@@ -11,8 +11,8 @@ module Handy
       load 'handy/heroku_tasks.rb'
       load 'handy/additional_test_directories.rb'
       load 'handy/delete_heroku_apps.rb'
+      load 'handy/add_database_yml.rb'
     end
 
   end
 end
-
