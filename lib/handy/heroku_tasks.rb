@@ -82,7 +82,7 @@ namespace :handy do
     end
 
     def take_current_snapshot(app_name)
-      execute "heroku pgbackups:capture --expire --app #{app_name}"
+      execute "heroku pg:backups capture --app #{app_name}"
     end
 
     def heroku_app_name t, args
