@@ -1,6 +1,6 @@
 def execute(cmd)
   puts cmd
-  system cmd
+  #system cmd
 end
 
 namespace :handy do
@@ -26,6 +26,8 @@ namespace :handy do
 
     desc "Take snapshot of production db and copy production data to development"
     task :prod2development, :app do |t, args|
+      puts "Execute following commands on your terminal"
+      puts ""
       export2local "#{heroku_app_name(t, args)}-production"
     end
 
