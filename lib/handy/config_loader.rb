@@ -1,3 +1,6 @@
+#This file is needed copy production db to localhost. This file
+#is used to get database name.
+
 require "hashr"
 
 module Handy

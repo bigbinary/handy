@@ -5,9 +5,15 @@ end
 
 namespace :handy do
 
-  desc "delete merged branches"
-  task :delete_merged_branches do
+  desc "delete merged branches from github"
+  task :delete_merged_branches_from_github do
+
+    puts "This command deletes branches from github."
+    puts "This command would never delete master, staging or production branch."
+    puts "This command only deletes branches which are already merged."
     cmd = "git branch -r --merged | grep -v master | grep -v staging | grep -v production | sed -e 's/origin\//:/' | xargs git push origin"
+    puts cmd
+
     `#{cmd}`
   end
 
@@ -18,17 +24,17 @@ namespace :handy do
       take_current_snapshot "#{heroku_app_name(t, args)}-production"
     end
 
-    desc "Takes snapshot of production db and copies production data to development"
+    desc "Take snapshot of production db and copy production data to development"
     task :prod2development, :app do |t, args|
       export2local "#{heroku_app_name(t, args)}-production"
     end
 
-    desc "Takes snapshot of staging db and copies staging data to development"
+    desc "Take snapshot of staging db and copy staging data to development"
     task :staging2development, :app do |t, args|
       export2local "#{heroku_app_name(t, args)}-staging"
     end
 
-    desc "Takes snapshot of production db and copies production data to staging"
+    desc "Take snapshot of production db and copy production data to staging"
     task :prod2staging, :app do |t, args|
       take_current_snapshot "#{heroku_app_name(t, args)}-production"
 
@@ -40,7 +46,7 @@ namespace :handy do
       execute "heroku pgbackups:restore DATABASE #{get_src_db_url_cmd} --app #{dst_app_name} --confirm #{dst_app_name}"
     end
 
-    desc "Takes snapshot of branch A and pushes to branch B"
+    desc "Take snapshot of branch A and copy data to branch B"
     task :a2b, :app do |t, args|
       a = ENV['A'] || ENV['a']
       b = ENV['B'] || ENV['b']
@@ -71,8 +77,8 @@ namespace :handy do
 
     def export2local(app_name)
       take_current_snapshot(app_name)
-      execute "curl -o latest.dump `heroku pgbackups:url --app #{app_name}`"
-      execute restore_command + "; rm latest.dump" 
+      execute "curl -o latest.dump `heroku pg:backups public-url --app #{app_name}`"
+      execute restore_command + "; rm latest.dump"
     end
 
     def take_current_snapshot(app_name)
@@ -91,17 +97,20 @@ ERROR_MSG
       database_config && database_config[:database] ||
           abort('Error: Please check your database.yml since no database was found.')
     end
-    
+
     def database_config
       @database_config ||= Handy::ConfigLoader.new('database.yml').load
     end
-    
+
     def restore_command
+      host = database_config[:host]
+
+      #Posgresql.app sets user as machine user. In mac command "id -un" gets user name
+      username = `id -un`.chomp
+
       result = "pg_restore --verbose --clean --no-acl --no-owner"
-      result += " -h#{database_config[:host]}" if database_config[:host].present?
-      result += " -U#{database_config[:username]}" if database_config[:username].present?
-      result = "PGPASSWORD=#{database_config[:password]} #{result}" if database_config[:password].present?
-      
+      result += " -h#{host}"
+      result += " -U#{username}"
       result + " -d #{local_database} latest.dump"
     end
   end
