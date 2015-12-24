@@ -13,7 +13,7 @@ And then execute:
 ## Settings
 
 Besides having some useful rake tasks it also sets up a constant called
-`Settings`. It reads the `application.yml` file and populates
-`Settings`.
+`Settings` if a file named `config/settings.yml` is present.
 
-You can use a separate file for each environment. Example `config/settings/development.yml` contains development settings.
+In Rails 4.1+ apps, this functionality is not needed because
+of presence of `config/secrets.yml`.
