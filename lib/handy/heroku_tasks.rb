@@ -44,8 +44,8 @@ namespace :handy do
       src_app_name = "#{heroku_app_name}-production"
       dst_app_name = "#{heroku_app_name}-staging"
 
-      get_src_db_url_cmd = "`heroku pgbackups:url --app #{src_app_name}`"
-      execute "heroku pgbackups:restore DATABASE #{get_src_db_url_cmd} --app #{dst_app_name} --confirm #{dst_app_name}"
+      get_src_db_url_cmd = "`heroku pg:backups public-url --app #{src_app_name}`"
+      execute "heroku pg:backups restore #{get_src_db_url_cmd} DATABASE --app #{dst_app_name} --confirm #{dst_app_name}"
     end
 
     desc "Take snapshot of branch A and copy data to branch B"
@@ -73,8 +73,8 @@ namespace :handy do
       src_app_name = "#{heroku_app_name}-#{a}"
       dst_app_name = "#{heroku_app_name}-#{b}"
 
-      get_src_db_url_cmd = "`heroku pgbackups:url --app #{src_app_name}`"
-      execute "heroku pgbackups:restore DATABASE #{get_src_db_url_cmd} --app #{dst_app_name} --confirm #{dst_app_name}"
+      get_src_db_url_cmd = "`heroku pg:backups public-url --app #{src_app_name}`"
+      execute "heroku pg:backups restore #{get_src_db_url_cmd} DATABASE --app #{dst_app_name} --confirm #{dst_app_name}"
     end
 
     def export2local(app_name)
